@@ -210,7 +210,9 @@ public class Rpg_game {
 			System.out.println(hero_name + "의 공격입니다.");
 			sum = hero_attack();
 			monster_attacked(sum); // 영웅의 순수데미지를 입력받아 실제로 몬스터가 받는 데미지로 monster_hp 감소시키는 메서드
-			System.out.println("데미지는 " + hero_attack() + " 입니다.");
+			int Dmg;
+			Dmg = hero_attack() - monster_defense;
+			System.out.println("데미지는 " + Dmg + " 입니다.");
 
 			// 몬스터 사망 확인
 			if (monster_hp <= 0) {
@@ -221,8 +223,9 @@ public class Rpg_game {
 			// 몬스터의 공격 영웅 공격 시 매커니즘과 동일
 			System.out.println(monster_name + "의 공격입니다.");
 			sum = monster_attack();
-			hero_attacked(monster_attack());
-			System.out.println("데미지는 " + monster_attack() + " 입니다.");
+			hero_attacked(sum);
+			Dmg = monster_attack() - hero_defense;
+			System.out.println("데미지는 " + Dmg + " 입니다.");
 
 			// 영웅 사망 확인
 			if (hero_hp <= 0) {
@@ -239,8 +242,8 @@ public class Rpg_game {
 			System.out.println(hero_name + "의 공격입니다.");
 
 			// 공격 스킬 선택
-			System.out.print("1. 일반 공격\n 2. 쓰러스트\n");
-			System.out.print("공격 번호를 입력하세요.");
+			System.out.print("1. 일반 공격\n2. 쓰러스트\n");
+			System.out.print("공격 번호를 입력하세요. : ");
 			int skill_num = in.nextInt();
 
 			// 공격 별 데미지 산정 후 공격
@@ -249,7 +252,9 @@ public class Rpg_game {
 				// 일반 공격 시 기존 hero_attack와 데미지 동일
 				sum = hero_attack();
 				monster_attacked(sum);
-				System.out.println("데미지는 " + hero_attack() + " 입니다.");
+				int Dmg;
+				Dmg = hero_attack() - monster_defense;
+				System.out.println("데미지는 " + Dmg + " 입니다.");
 
 				// 몬스터 사망 확인
 				if (monster_hp <= 0) {
@@ -260,7 +265,8 @@ public class Rpg_game {
 				// 몬스터의 공격 영웅 공격 시 매커니즘과 동일
 				System.out.println(monster_name + "의 공격입니다.");
 				sum = monster_attack();
-				hero_attacked(monster_attack());
+				hero_attacked(sum);
+				Dmg = monster_attack() - hero_defense;
 				System.out.println("데미지는 " + monster_attack() + " 입니다.");
 
 				// 영웅 사망 확인
@@ -274,7 +280,9 @@ public class Rpg_game {
 				// 쓰러스트 공격 시 새로운 공격 매커니즘 hero_thrust() 사용
 				sum = hero_thrust();
 				monster_attacked(sum);
-				System.out.println("데미지는 " + hero_thrust() + " 입니다.");
+				int Dmg;
+				Dmg = hero_attack() - monster_defense;
+				System.out.println("데미지는 " + Dmg + " 입니다.");
 
 				// 몬스터 사망 확인
 				if (monster_hp <= 0) {
@@ -285,8 +293,9 @@ public class Rpg_game {
 				// 몬스터의 공격 영웅 공격 시 매커니즘과 동일
 				System.out.println(monster_name + "의 공격입니다.");
 				sum = monster_attack();
-				hero_attacked(monster_attack());
-				System.out.println("데미지는 " + monster_attack() + " 입니다.");
+				hero_attacked(sum);
+				Dmg = monster_attack() - hero_defense;
+				System.out.println("데미지는 " + Dmg + " 입니다.");
 
 				// 영웅 사망 확인
 				if (hero_hp <= 0) {
