@@ -168,6 +168,13 @@ public class Rpg_game {
 		}
 	}
 
+	// 레벨 2에 사용 가능 한 스킬 쓰러스트의 순수 데미지 산정
+	static int hero_thrust() {
+		int sum = hero_level * 10 + hero_power * 42;
+
+		return sum;
+	}
+
 	// 전투 진행 메서드
 	static void fight(int n, Scanner in) {
 
@@ -195,7 +202,7 @@ public class Rpg_game {
 
 		System.out.println(monster_name + "와 전투를 시작합니다.");
 
-		while (true) {
+		while (hero_level == 1) {
 			// 영웅, 몬스터 각 공격 시 넣는 순수데미지를 저장하는 변수
 			int sum;
 
@@ -222,6 +229,72 @@ public class Rpg_game {
 				hero_hp = 0;
 				break;
 			}
+		}
+		// 영웅 레벨 2로 레벨 업시 새로운 스킬 쓰러스트 사용 가능
+		while (hero_level >= 2) {
+			// 영웅, 몬스터 각 공격 시 넣는 순수데미지를 저장하는 변수
+			int sum;
+
+			// 영웅의 공격
+			System.out.println(hero_name + "의 공격입니다.");
+
+			// 공격 스킬 선택
+			System.out.print("1. 일반 공격\n 2. 쓰러스트\n");
+			System.out.print("공격 번호를 입력하세요.");
+			int skill_num = in.nextInt();
+
+			// 공격 별 데미지 산정 후 공격
+			if (skill_num == 1) {
+
+				// 일반 공격 시 기존 hero_attack와 데미지 동일
+				sum = hero_attack();
+				monster_attacked(sum);
+				System.out.println("데미지는 " + hero_attack() + " 입니다.");
+
+				// 몬스터 사망 확인
+				if (monster_hp <= 0) {
+					System.out.println(monster_name + "가 죽었습니다.");
+					break;
+				}
+
+				// 몬스터의 공격 영웅 공격 시 매커니즘과 동일
+				System.out.println(monster_name + "의 공격입니다.");
+				sum = monster_attack();
+				hero_attacked(monster_attack());
+				System.out.println("데미지는 " + monster_attack() + " 입니다.");
+
+				// 영웅 사망 확인
+				if (hero_hp <= 0) {
+					hero_hp = 0;
+					break;
+				}
+
+			} else if (skill_num == 2) {
+
+				// 쓰러스트 공격 시 새로운 공격 매커니즘 hero_thrust() 사용
+				sum = hero_thrust();
+				monster_attacked(sum);
+				System.out.println("데미지는 " + hero_thrust() + " 입니다.");
+
+				// 몬스터 사망 확인
+				if (monster_hp <= 0) {
+					System.out.println(monster_name + "가 죽었습니다.");
+					break;
+				}
+
+				// 몬스터의 공격 영웅 공격 시 매커니즘과 동일
+				System.out.println(monster_name + "의 공격입니다.");
+				sum = monster_attack();
+				hero_attacked(monster_attack());
+				System.out.println("데미지는 " + monster_attack() + " 입니다.");
+
+				// 영웅 사망 확인
+				if (hero_hp <= 0) {
+					hero_hp = 0;
+					break;
+				}
+			}
+
 		}
 
 	}
