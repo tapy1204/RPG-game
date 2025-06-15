@@ -1,0 +1,129 @@
+package Main;
+
+import java.util.Scanner;
+
+import Character.Archer;
+import Character.Hero;
+import Character.Monster;
+import Character.Sorcerer;
+import Character.Warrior;
+import Map.Ground;
+import Map.PotionStore;
+import Map.WeaponStore;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+
+		// 영웅 선택 입력 받은 후 게임 입장
+		System.out.println("********RPG GAME*********");
+		System.out.print("1. 전사\n2. 마법사\n3. 궁수\n");
+		System.out.print("직업의 번호를 입력하세요. : ");
+		int selectJob = in.nextInt();
+		while (selectJob != 1 && selectJob != 2 && selectJob != 3) {
+			System.out.println("다시 선택해주세요");
+			System.out.print("직업의 번호를 입력하세요. : ");
+			selectJob = in.nextInt();
+		}
+		// 조건 1 각 클래스 별로 객체 생성, 조건 2 Hero 클래스 직업 선택 처리
+		Hero hero = null;
+
+		if (selectJob == 1) {
+			System.out.println("전사가 선택되었습니다.");
+			hero = new Warrior();
+		}
+		if (selectJob == 2) {
+			System.out.println("마법사가 선택되었습니다.");
+			hero = new Sorcerer();
+		}
+		if (selectJob == 3) {
+			System.out.println("궁수가 선택되었습니다.");
+			hero = new Archer();
+		}
+
+		System.out.print("영웅의 이름을 입력하세요. : ");
+		hero.name = in.next();
+
+		System.out.println("이름이 입력되었습니다.");
+		System.out.println("게임에 입장하였습니다.");
+		System.out.println("************************");
+
+		// 영웅정보 출력
+		heroInfo(hero);
+
+		System.out.println("************************");
+
+		while (true) {
+			System.out.print("1. 사냥터\n2. 포션 상점\n3. 무기 상점\n4. 미션목록\n");
+			System.out.print("입장 할 장소를 입력하세요. : ");
+			int place = in.nextInt();
+			if (place != 1 && place != 2 && place != 3 && place != 4) {
+				System.out.println("장소를 다시 선택하세요.");
+				System.out.print("입장 할 장소를 입력하세요. : ");
+				place = in.nextInt();
+			}
+			if (place == 1) {
+				Ground ground = new Ground();
+				System.out.print("사냥할 몬스터를 선택하세요: ");
+				int selectMon = in.nextInt();
+				Monster monster = Monster.selectMon(selectMon);
+				hero.fight(hero, monster);
+				if (hero.curHp <= 0) {
+					System.out.println("영웅이 사망했습니다, 부활합니다.");
+					System.out.println("***********************");
+					hero.revive();
+					heroInfo(hero);
+					System.out.println("***********************");
+				}
+				if (monster.maxHp <= 0) {
+					hero.experience += monster.experience;
+					hero.money += monster.money;
+					System.out.println("***********************");
+					heroInfo(hero);
+					System.out.println("***********************");
+
+				}
+
+				if (hero.experience >= hero.level * 80) {
+					hero.levelUp();
+					System.out.println("***********************");
+					heroInfo(hero);
+					System.out.println("***********************");
+				}
+			}
+			if (place == 2) {
+				PotionStore potion = new PotionStore();
+				System.out.print("원하시는 물건을 입력하세요. : ");
+				int potionnum = in.nextInt();
+
+				potion.potionStore_show(hero, hero.money, potionnum);
+				heroInfo(hero);
+				System.out.println("***********************");
+			}
+			if (place == 3) {
+				WeaponStore weapon = new WeaponStore();
+				System.out.print("원하시는 무기를 입력하세요. : ");
+				int weaponNum = in.nextInt();
+				weapon.weaponStore_show(hero, weaponNum);
+				heroInfo(hero);
+				System.out.println("***********************");
+			}
+			if (place == 4) {
+				System.out.println("***********************");
+				hero.mission.showMissions();
+				System.out.println("***********************");
+			}
+		}
+
+	}
+
+	static void heroInfo(Hero hero) {
+		System.out.println("현재 " + hero.name + "의 레벨 : " + hero.level);
+		System.out.println("현재 " + hero.name + "의 힘 : " + hero.power);
+		System.out.println("현재 " + hero.name + "의 방어력 : " + hero.defense);
+		System.out.println("현재 " + hero.name + "의 HP : " + hero.curHp);
+		System.out.println("현재 " + hero.name + "의 MP : " + hero.curMp);
+		System.out.println("현재 " + hero.name + "의 경험치 : " + hero.experience);
+		System.out.println("현재 " + hero.name + "의 돈 : " + hero.money);
+	}
+}
